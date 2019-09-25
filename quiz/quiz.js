@@ -15,8 +15,7 @@ var RevealQuiz = (function(){
 	var config = Reveal.getConfig().quiz || {};
 
     // get quiz server
-    var server = config.server || "http://graphics.uni-bielefeld.de:8080";
-
+    var server = config.server || "http://mac220bc73d76.dyn.epfl.ch:8080";
 
     // get path of script -> used for loading audio files
 	var path = scriptPath();
@@ -215,6 +214,9 @@ var RevealQuiz = (function(){
         var answersOld = Reveal.getCurrentSlide().getElementsByClassName('answer');
         var answersNew = Reveal.getCurrentSlide().querySelectorAll('.reveal .quiz ul li');
         var numAnswers = answersOld.length + answersNew.length;
+        var multiAnswerTag = Reveal.getCurrentSlide().getElementsByClassName('multianswer');
+        // Multi-answer questions are requested by a negative ballot length
+        if (multiAnswerTag.length > 0) numAnswers = -numAnswers;
         var xhr = new XMLHttpRequest();
         xhr.open('post', server + '/init/' + numAnswers, false);
         xhr.withCredentials = true;
